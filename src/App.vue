@@ -3,9 +3,9 @@
     <!-- ナビゲーションバーコンポーネントの使用。sign-out-clicked イベントに signOut メソッドを指定 -->
     <pm-nav-bar
       :user="user"
+      :menu-expanded="menuExpanded"
       @sign-out-clicked="signOut"
       @menu-clicked="switchMenuState"
-      :menu-expanded="menuExpanded"
     ></pm-nav-bar>
     <main>
       <router-view />

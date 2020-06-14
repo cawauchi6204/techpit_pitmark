@@ -4,10 +4,18 @@
     <label class="label" v-if="label">{{ label }}</label>
     <!-- icon が指定されたときだけ必要なクラスを設定します -->
     <p class="control" :class="{ 'has-icons-left': icon }">
-      <input class="input" :type="type" :placeholder="placeholder" :value="value" @input="input" />
+      <input
+        class="input"
+        :class="{ 'is-danger': error }"
+        :type="type"
+        :placeholder="placeholder"
+        @change="onChanged"
+        v-model="innerValue"
+      />
       <!-- アイコンが指定されたときだけ表示します -->
       <pm-icon v-if="icon" class="is-small is-left" :name="icon"></pm-icon>
     </p>
+    <p class="help is-danger" v-if="error">{{ error }}</p>
   </div>
 </template>
 
@@ -28,13 +36,30 @@ export default {
     },
     placeholder: String,
     value: String,
-    icon: String
+    icon: String,
+    // エラーメッセージ
+    error: String
+  },
+  data() {
+    return {
+      label: ""
+    };
+  },
+  computed: {
+    innerValue: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        if (this.value !== val) {
+          this.$emit("input", val);
+        }
+      }
+    }
   },
   methods: {
-    input(e) {
-      if (e.target.value !== this.value) {
-        this.$emit("input", e.target.value);
-      }
+    onChanged(e) {
+      this.$emit("change", e.target.value);
     }
   }
 };

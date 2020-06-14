@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import SignUp from "../views/SignUp";
 import SignIn from "../views/SignIn";
+import BookmarkNew from "../views/BookmarkNew";
 
 
 Vue.use(VueRouter);
@@ -22,6 +23,11 @@ const routes = [
     path: "/sign_in",
     name: "sign_in",
     component: SignIn
+  },
+  {
+    path: "/bookmarks/new",
+    name: "bookmark_new",
+    component: BookmarkNew
   },
 ];
 

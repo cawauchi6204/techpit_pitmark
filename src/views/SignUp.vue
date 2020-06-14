@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import { authService } from "../service/AuthService";
 import pmPageTitle from "../components/PageTitle";
 // アイコンコンポーネントをインポート
 import pmTextField from "../components/TextField";
 import { userService } from "../service/UserService";
+import { authService } from "../service/AuthService";
 
 export default {
   name: "sign_up",
@@ -36,7 +36,8 @@ export default {
   methods: {
     signUp() {
       authService
-        .createUser(this.email, this.password)
+        .signUp(this.email, this.password)
+        // ページ遷移前にユーザー登録処理を実行する
         .then(credential => {
           return userService.createUser(credential.user);
         })
@@ -44,7 +45,7 @@ export default {
           this.$router.push({ name: "home" });
         })
         .catch(error => {
-          alert(error.messsage);
+          alert(error.message);
         });
     }
   }

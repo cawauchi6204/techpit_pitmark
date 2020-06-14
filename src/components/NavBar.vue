@@ -20,6 +20,10 @@
       </div>
       <div id="navbar-links" class="navbar-menu" :class="{ 'is-active':menuExpanded }">
         <div class="navbar-end" v-if="user">
+          <router-link :to="{ name: 'bookmark_new' }" class="navbar-item">
+            <pm-icon name="bookmark"></pm-icon>
+            <span>ブックマークする</span>
+          </router-link>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               <pm-icon name="user"></pm-icon>
