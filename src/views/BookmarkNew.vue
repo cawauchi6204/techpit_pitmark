@@ -35,6 +35,8 @@
 <script>
 import pmPageTitle from "../components/PageTitle";
 import pmTextField from "../components/TextField";
+import { userBookmarkService } from "../service/UserBookmarkService";
+import { userService } from "../service/UserService";
 
 export default {
   name: "bookmark_new",
@@ -46,17 +48,49 @@ export default {
     return {
       title: null,
       url: null,
-      comment: null
+      comment: null,
+      titleError: null,
+      urlError: null,
+      commentError: null
     };
   },
   methods: {
-    addBookmark() {
-      //TODO:登録処理
+    async addBookmark() {
+      this.validate();
+      const error = this.titleError || this.urlError || this.commentError;
+
+      if (error) {
+        alert("入力値が不正です。");
+        return;
+      }
+
+      const user = await userService.getCurrentUser();
+
+      const userBookmark = await userBookmarkService.getBookmark(
+        user,
+        this.url
+      );
+      if (userBookmark != null) {
+        alert("すでに登録されているURLです。");
+        return;
+      }
+
+      const form = {
+        title: this.title,
+        url: this.url,
+        comment: this.comment
+      };
+      try {
+        await userBookmarkService.addBookmark(user, form);
+        this.$router.push({ name: "home" });
+      } catch (e) {
+        alert(e.message);
+      }
     },
     validateTitle(title) {
       this.titleError = null;
-    //   最初にnullで初期化している
-      if (!title) {
+      //   最初にnullで初期化している
+      if (!this.title) {
         this.titleError = "タイトルは必須です";
       } else if (title.length > 50) {
         this.titleError = "タイトルは50文字までです";
@@ -73,6 +107,11 @@ export default {
     validateComment(comment) {
       this.commentError =
         comment && comment.length > 150 ? "コメントは150文字までです" : null;
+    },
+    validate() {
+      this.validateTitle(this.title);
+      this.validateUrl(this.url);
+      this.validateComment(this.comment);
     }
   }
 };

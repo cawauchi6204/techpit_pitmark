@@ -28,8 +28,6 @@ export default {
   props: {
     type: {
       type: String,
-      label: String,
-      default: "text",
       validator(val) {
         return ["text", "email", "password", "search", "url"].includes(val);
       }
@@ -37,13 +35,9 @@ export default {
     placeholder: String,
     value: String,
     icon: String,
+    label:String,
     // エラーメッセージ
     error: String
-  },
-  data() {
-    return {
-      label: ""
-    };
   },
   computed: {
     innerValue: {

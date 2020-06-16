@@ -12,7 +12,7 @@ class UserService {
             throw new Error("サインインしていません。サインインしてください");
         }
 
-        const snapshot = await this.db.collection("authId", "==", this.auth.currentUser.uid).get();
+        const snapshot = await this.db.collection("users").where("authId", "==", this.auth.currentUser.uid).get();
 
         let user = null;
         snapshot.forEach(doc => {
@@ -28,7 +28,7 @@ class UserService {
     async createUser(auth) {
         const user = {
             authId: auth.uid,
-            gravarUrl: gravatar.url(auth.email),
+            gravtarUrl: gravatar.url(auth.email),
             name: auth.email.substr(0, auth.email.indexOf("@"))
             //emailの@から先を切り取る
         };
